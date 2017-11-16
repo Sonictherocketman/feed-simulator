@@ -34,5 +34,78 @@ I'm still looking to add a number of features like:
 - Routes that return incorrect headers.
     - Feed was updated but `HEAD` headers say it wasn't.
     - Feed was NOT updated but `HEAD` headers say it was.
+- RSS 1.0 and 0.9 support
+- Atom support
 
 If you find something you'd like to add, fork the project and submit a PR!
+
+
+## Documentation
+
+This app has a number of different URL routes and params it supports.
+
+
+### Routes
+
+- `/rss/<feed_id>`: Generates an RSS 2.0 feed with the given ID.
+
+#### Sample Request
+
+```
+$ http :5000/jsonfeed/testing?random=1&clear=1
+
+<rss>
+    <channel>
+        <title>testing</title>
+        <link>https://rssfeed.org/testing</link>
+        <description>A testing feed with id: testing</description>
+        <item>
+            <title>Test item: 9c2753f3653149b8a03d09c9cf5cb610</title>
+            <description>Lorem ipsum.</description>
+            <pubDate>2017-11-16T19:30:36.448431</pubDate>
+            <guid>9c2753f3653149b8a03d09c9cf5cb610</guid>
+        </item>
+    </channel>
+</rss>
+```
+
+
+- `/jsonfeed/<feed_id>`: Generates a JSON Feed with the given ID.
+
+#### Sample Request
+
+```
+$ http :5000/jsonfeed/testing?random=1&clear=1
+
+{
+    "version": "https://jsonfeed.org/version/1",
+    "title": "testing",
+    "description": "A testing feed with id: testing",
+    "home_page_url": "https://jsonfeed.org/",
+    "feed_url": "https://jsonfeed.org/testing",
+    "author": {
+        "name": "A cool person."
+    },
+    "items": [
+        {
+            "id": "https://jsonfeed.org/2017/05/17/6010abc366254a7690ca1dc6e0538e62",
+            "content_html": "<p>Lorem ipsum.</p>",
+            "title": "Test item: 6010abc366254a7690ca1dc6e0538e62",
+            "content": "Lorem ipsum.",
+            "url": "https://jsonfeed.org/2017/05/17/6010abc366254a7690ca1dc6e0538e62",
+            "date_published": "2017-11-16T19:28:30.961458"
+        }
+    ]
+}
+```
+
+
+### Params
+
+Both routes accept the same parameters:
+
+- `new`: Adds a new feed item to the cached feed.
+- `random`: Randomly adds a new item to the feed.
+- `clear`: Clears the cached feed and creates a new one.
+
+**Note:** Parameters must contain a value. `random=1` not just `random`
