@@ -1,0 +1,12 @@
+cache
+logfile
+*.log
+*.sh
+staticfiles
+.DS_Store
+__pycache__/
+*.pyc
+/htmlcov/
+/.coverage
+/db.sqlite3
+*node_modules*
