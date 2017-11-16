@@ -1,4 +1,4 @@
-import json, os
+import json, random, os
 
 from flask import Flask, request, Response
 import lxml
@@ -12,6 +12,14 @@ app = Flask(__name__)
 
 if not os.path.exists(cache):
     os.mkdir(cache)
+
+
+def _should_add_item(request):
+    if request.args.get('random', False):
+        new = True if random.random() > 0.5 else False
+    else:
+        new = request.args.get('new', False)
+    return new
 
 
 @app.route("/")
@@ -33,9 +41,7 @@ def rss(feed_id):
     else:
         feed = utils.get_default_rssfeed(feed_id)
 
-    # Add a new random item to the feed.
-    new = request.args.get('new', False)
-    if new:
+    if _should_add_item(request):
         new_item = utils.get_new_rssfeed_item()
         feed.xpath('/rss/channel')[0].insert(0, new_item)
 
@@ -61,9 +67,7 @@ def jsonfeed(feed_id):
     else:
         feed = utils.get_default_jsonfeed(feed_id)
 
-    # Add a new random item to the feed.
-    new = request.args.get('new', False)
-    if new:
+    if _should_add_item(request):
         new_item = utils.get_new_jsonfeed_item()
         feed['items'].insert(0, new_item)
 
