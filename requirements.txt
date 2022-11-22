@@ -1,5 +1,5 @@
 click==6.7
-feedgen==0.6.1
+feedgen==0.9.0
 Flask==0.12.2
 itsdangerous==0.24
 Jinja2==2.11.3
